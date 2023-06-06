@@ -153,7 +153,7 @@ class DenseNet(nn.Module):
         self.decoder = nn.Sequential(
             nn.UpsamplingBilinear2d(scale_factor=2),
             nn.Conv2d(128, 3, 3, padding=1, stride=1),
-            nn.Tanh(),
+            nn.ReLU(),
         )
 
         # First convolution

@@ -1,14 +1,14 @@
 import json
 import torch
-from torch.utils.data import random_split
+import warnings
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
+from torch.utils.data import random_split
 from torchvision import transforms
 from torchvision import datasets
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from models.densenet201_encoder_decoder.densenet import densenet201
-import warnings
 warnings.filterwarnings("ignore", category=UserWarning) 
 
 K_FOLDS = 5
@@ -51,6 +51,7 @@ print(f"Using {device} for training")
 
 # Cria o modelo, reseta os pesos e define o dispositivo de execução
 model = densenet201(pretrained=torch.load("imagenet-trainining/densenet.pth"))
+model = nn.DataParallel(model) # Habilitando o uso de mais de uma GPU para treinamento se possível
 model.to(device)
 
 # Definindo nossa função para o calculo de loss e o otimizador

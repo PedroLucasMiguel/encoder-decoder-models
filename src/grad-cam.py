@@ -7,7 +7,7 @@ import cv2
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning) 
 
-IMG_NAME = "images/cat-and-dog2.jpg"
+IMG_NAME = "images/dog4.png"
 
 device = "cpu"
 print(f"Using {device}")
@@ -32,7 +32,7 @@ model.eval()
 
 outputs = model(input_batch)
 print(outputs)
-outputs[:, 0].backward()
+outputs[:, 1].backward()
 
 gradients = model.get_activations_gradient()
 gradients = torch.mean(gradients, dim=[0, 2, 3])
@@ -52,5 +52,5 @@ heatmap = cv2.resize(heatmap, (img.shape[1], img.shape[0]))
 heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
 cv2.imwrite("../output/gradient.jpg", heatmap)
 superimposed_img = heatmap * 0.4 + img
-final_img = np.concatenate((img, superimposed_img), axis=1)
-cv2.imwrite("../output/map.jpg", final_img)
+#final_img = np.concatenate((img, superimposed_img), axis=1)
+cv2.imwrite("../output/map.jpg", superimposed_img)
